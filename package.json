@@ -18,8 +18,10 @@
     "@emotion/styled": "^11.10.0",
     "@mui/icons-material": "^5.8.4",
     "@mui/material": "^5.9.3",
-    "@reduxjs/toolkit": "^1.8.3",
-    "react-scripts": "^5.0.1"
+    "@reduxjs/toolkit": "^1.8.5",
+    "react-redux": "^8.0.4",
+    "react-scripts": "^5.0.1",
+    "react-toastify": "^9.0.8"
   },
   "browserslist": {
     "production": [
