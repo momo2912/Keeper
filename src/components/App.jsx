@@ -6,14 +6,15 @@ import FormAddNote from "./FormAddNote";
 import { ToastContainer } from "react-toastify";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import { useSelector } from "react-redux";
 
 function App() {
   const [notes, setNotes] = React.useState([]);
-
+  const newTaskList = useSelector(state => state.task.taskList);
+  console.log(newTaskList);
   function addNote(note) {
-    console.log(note);
     if (note.title === "" || note.body === "") {
-      toast.error("Title and Note can not be empty!");
+      return;
     } else {
       setNotes((prevNotes) => {
         return [...prevNotes, note];
@@ -37,8 +38,8 @@ function App() {
         <Header />
         <FormAddNote onAdd={addNote} />
 
-        {notes.map((note, index) => {
-          return <Note key={index} id={index} title={note.title} body={note.body} onDelete={onDelete} />;
+        {newTaskList?.map((task, index) => {
+          return <Note key={index} id={index} title={task.title} body={task.body} onDelete={onDelete} />;
         })}
 
         <Footer />

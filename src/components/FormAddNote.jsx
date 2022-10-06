@@ -1,8 +1,11 @@
 import { useState, useRef } from "react";
+import { useDispatch } from "react-redux";
 import AddIcon from '@mui/icons-material/Add';
+import { addTask } from "../redux/features/taskSlice";
 
 
 function FormAddNote({ onAdd }) {
+  const dispatch = useDispatch();
   const titleRef = useRef();
   const [note, setNote] = useState({
     title: "",
@@ -27,6 +30,7 @@ function FormAddNote({ onAdd }) {
       title: "",
       body: "",
     });
+    dispatch(addTask(note));
     titleRef.current.focus();
   };
 

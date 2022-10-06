@@ -67,15 +67,15 @@ footer {
     border-radius: 7px;
     box-shadow: 0 2px 5px #ccc;
     padding: 20px;
-    width: 500px;
+    width: 400px;
     height: 200px;
-    margin: 32px 30%;
+    margin: 15px 8px;
     float: left;
 }
 
 .add-btn {
     position: relative;
-    left: 400px;
+    left: 300px;
     top: -20px;
     display: flex;
     justify-content: center;
