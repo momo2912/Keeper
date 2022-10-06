@@ -1,5 +1,7 @@
 import { useState, useRef } from "react";
 import AddIcon from '@mui/icons-material/Add';
+
+
 function FormAddNote({ onAdd }) {
   const titleRef = useRef();
   const [note, setNote] = useState({
@@ -19,6 +21,7 @@ function FormAddNote({ onAdd }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     onAdd(note);
     setNote({
       title: "",
