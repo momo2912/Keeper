@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState, useEffect, useRef } from 'react';
+import { useDispatch } from 'react-redux';
 import { formatTime } from '../helpers/formatTime';
 import { addWorkedTime } from '../redux/features/timerSlice';
 import { toast } from 'react-toastify';
@@ -9,12 +9,23 @@ const Timer = () => {
     const dispatch = useDispatch();
     const [countDownStart, setCountDownStart] = useState(false);
     const [workedTime, setWorkedTime] = useState(0);
-    const [timeCountdown, setTimeCountdown] = useState(600)
+    const [timeCountdown, setTimeCountdown] = useState(600);
+    const timeOptions = [
+        "10",
+        "15",
+        "20",
+        "25",
+        "30",
+        "45",
+        "60"
+    ];
+    const timeOptionsRef = useRef();
 
     const reset = () => {
         setTimeCountdown(600);
         setWorkedTime(0);
         setCountDownStart(false);
+        timeOptionsRef.current.value = "10"
         toast.success("Timer reset")
     }
 
@@ -24,7 +35,7 @@ const Timer = () => {
             interval = setInterval(() => {
                 setTimeCountdown(timeCountdown => timeCountdown - 1);
                 setWorkedTime(workedTime => workedTime + 1);
-                
+
             }, 1000);
         } else {
             clearInterval(interval);
@@ -36,13 +47,8 @@ const Timer = () => {
     }, [countDownStart, timeCountdown]);
 
     const handleChange = (e) => {
-        const sessionTime = Number(e.target.value)
-        if (sessionTime < 10) {
-            setTimeCountdown(sessionTime * 3600);
-        }
-        else {
-            setTimeCountdown(sessionTime * 60);
-        }
+        let timeRange = Number(e.target.value);
+        setTimeCountdown(timeRange * 60);
     }
     const toggleStartStop = () => {
         setCountDownStart(countDownStart => !countDownStart);
@@ -60,13 +66,12 @@ const Timer = () => {
 
                 <div className='timer-details'>
                     <h2>Work session range</h2>
-                    <select className='timer-select' onChange={handleChange}>
-                        <option value="10" >10 minutes</option>
-                        <option value="15">15 minutes</option>
-                        <option value="20">20 minutes</option>
-                        <option value="30">30 minutes</option>
-                        <option value="45">45 minutes</option>
-                        <option value="1">01 hour</option>
+                    <select className='timer-select' ref={timeOptionsRef} onChange={handleChange}>
+                        {timeOptions.map((option, index) => (
+                            <option key={index} value={option} >
+                                {Number(option) < 60 ? `${option} minutes` : `${option / 60} hours`}
+                            </option>
+                        ))}
                     </select>
                 </div>
             </div>
