@@ -29,7 +29,6 @@ const Timer = () => {
         } else {
             clearInterval(interval);
             setCountDownStart(false);
-            setTimeCountdown(600);
             setWorkedTime(0);
             dispatch(addWorkedTime(workedTime));
         }
