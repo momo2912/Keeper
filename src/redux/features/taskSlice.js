@@ -1,28 +1,54 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {}
+const initialState = {
+  taskList: [],
+  currentTask: {},
+  finishedTask: [],
+};
 
 export const taskSlice = createSlice({
-  name: 'task',
+  name: "task",
   initialState,
   reducers: {
-    increment: (state) => {
-      // Redux Toolkit allows us to write "mutating" logic in reducers. It
-      // doesn't actually mutate the state because it uses the Immer library,
-      // which detects changes to a "draft state" and produces a brand new
-      // immutable state based off those changes
-      state.value += 1
+    addTask: (state, action) => {
+      state.taskList.push(action.payload);
     },
-    decrement: (state) => {
-      state.value -= 1
+    removeTask: (state, action) => {
+      const taskIndex = state.taskList.findIndex(
+        (task) => task.id === action.payload
+      );
+      state.taskList.splice(taskIndex, 1);
+      state.finishedTask.splice(taskIndex, 1);
     },
-    incrementByAmount: (state, action) => {
-      state.value += action.payload
+    statusCheck: (state, action) => {
+      // console.log(action.payload)
+
+      const taskIndex = state.taskList.findIndex((task) => task.id === action.payload.id)
+      const task = state.taskList[taskIndex];
+      state.taskList[taskIndex].done = action.payload.done
+
+      if(state.taskList[taskIndex].done && !state.finishedTask.includes(task)) {
+        // console.log("TASK DONE")
+        state.finishedTask.push(task);
+
+      } if (!state.taskList[taskIndex].done) {
+        // console.log("TASK UNDONE")
+        state.finishedTask.splice(taskIndex,1);
+        
+      }
+    },
+
+    updateTask: (state, action) => {
+      const taskIndex = state.taskList.findIndex(
+        (task) => task.id === action.payload.id
+      );
+      state.taskList.splice(taskIndex, 1, action.payload);
     },
   },
-})
+});
 
 // Action creators are generated for each case reducer function
-export const { increment, decrement, incrementByAmount } = taskSlice.actions
+export const { addTask, removeTask, statusCheck, updateTask } =
+  taskSlice.actions;
 
-export default taskSlice.reducer
+export default taskSlice.reducer;

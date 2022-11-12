@@ -1,20 +1,16 @@
 import { useState, useRef } from "react";
 import { useDispatch } from "react-redux";
-import AddIcon from '@mui/icons-material/Add';
-import { addTask } from "../redux/features/taskSlice";
+import { updateTask } from "../redux/features/taskSlice";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from 'uuid';
 
 
-function FormAddNote() {
+function FormEditNote({ title, body, setEditing }) {
   const dispatch = useDispatch();
   const titleRef = useRef();
   const [note, setNote] = useState({
-    id: uuidv4(),
-    title: "",
-    body: "",
-    done: false,
-    createdAt: "",
+    title: title,
+    body: body,
   });
 
   const handleChange = (e) => {
@@ -23,23 +19,20 @@ function FormAddNote() {
       return {
         ...prevNote,
         [name]: value,
-        createdAt: Date.now(),
       };
     });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // onAdd(note);
     setNote({
       title: "",
       body: "",
     });
     if (note.title !== "") {
-      dispatch(addTask(note));
-      toast.success("Task added!")
-  
+      dispatch(updateTask(note));
+      toast.success("Task updated!");
+      setEditing(editing => !editing);
       titleRef.current.focus();
     } else {
       toast.warning("Task must have a title");
@@ -47,7 +40,7 @@ function FormAddNote() {
   };
 
   return (
-    <div className="form-add-note">
+    <div className="form-edit-note">
       <form>
         <label htmlFor="title">Title:</label>
         <input
@@ -55,7 +48,7 @@ function FormAddNote() {
           ref={titleRef}
           value={note.title}
           name="title"
-          className="title-input"
+          className="edit-title-input"
           placeholder="Add a task..."
           onChange={handleChange}
         ></input>
@@ -64,14 +57,14 @@ function FormAddNote() {
           required={true}
           value={note.body}
           name="body"
-          className="body-input"
+          className="edit-body-input"
           placeholder="Task Description..."
           onChange={handleChange}
         ></textarea>
       </form>
-      <button onClick={handleSubmit} className='add-btn'><AddIcon /></button>
+      <button onClick={handleSubmit} className='form-edit-btn'>Update</button>
     </div>
   );
 }
 
-export default FormAddNote;
+export default FormEditNote;

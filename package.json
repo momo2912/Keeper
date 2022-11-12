@@ -5,11 +5,12 @@
   "main": "index.js",
   "scripts": {
     "start": "react-scripts start",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "react-scripts build"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "msw": "^0.47.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
@@ -21,7 +22,9 @@
     "@reduxjs/toolkit": "^1.8.5",
     "react-redux": "^8.0.4",
     "react-scripts": "^5.0.1",
-    "react-toastify": "^9.0.8"
+    "react-toastify": "^9.0.8",
+    "redux-persist": "^6.0.0",
+    "uuid": "^9.0.0"
   },
   "browserslist": {
     "production": [
