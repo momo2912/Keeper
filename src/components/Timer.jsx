@@ -1,17 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { toast } from 'react-toastify';
 import { formatTime } from '../helpers/formatTime';
 import { addWorkedTime } from '../redux/features/timerSlice';
+import { toast } from 'react-toastify';
+
 
 const Timer = () => {
     const dispatch = useDispatch();
     const [countDownStart, setCountDownStart] = useState(false);
     const [workedTime, setWorkedTime] = useState(0);
-    const [sessionTime, setSessionTime] = useState({
-        unit: "m",
-        total: 10,
-    })
     const [timeCountdown, setTimeCountdown] = useState(600)
 
     const reset = () => {
@@ -23,23 +20,23 @@ const Timer = () => {
 
     useEffect(() => {
         let interval = null;
-        if (countDownStart) {
+        if (countDownStart && timeCountdown > 0) {
             interval = setInterval(() => {
                 setTimeCountdown(timeCountdown => timeCountdown - 1);
                 setWorkedTime(workedTime => workedTime + 1);
+                
             }, 1000);
-        } else if (!countDownStart || timeCountdown === 0) {
-            if(workedTime === sessionTime) {
-                toast.success("Congratulation! You have finished a session, let take a break.")
-            }
-            dispatch(addWorkedTime(workedTime));
+        } else {
             clearInterval(interval);
+            setCountDownStart(false);
+            setWorkedTime(0);
+            dispatch(addWorkedTime(workedTime));
         }
         return () => clearInterval(interval);
     }, [countDownStart, timeCountdown]);
 
     const handleChange = (e) => {
-        setSessionTime(Number(e.target.value));
+        const sessionTime = Number(e.target.value)
         if (sessionTime < 10) {
             setTimeCountdown(sessionTime * 3600);
         }
