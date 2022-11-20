@@ -37,7 +37,7 @@ const Timer = () => {
             interval = setInterval(() => {
                 setTimeCountdown(timeCountdown => timeCountdown - 1);
                 setWorkedTime(workedTime => workedTime + 1);
-                setIsCountDown(true);
+                
             }, 1000);
         } else {
             clearInterval(interval);
@@ -54,6 +54,7 @@ const Timer = () => {
         setTimeCountdown(timeRange * 60);
     }
     const toggleStartStop = () => {
+        setIsCountDown(true);
         setCountDownStart(countDownStart => !countDownStart);
     }
     return (
