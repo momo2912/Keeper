@@ -10,6 +10,7 @@ const Timer = () => {
     const [countDownStart, setCountDownStart] = useState(false);
     const [workedTime, setWorkedTime] = useState(0);
     const [timeCountdown, setTimeCountdown] = useState(600);
+    const [isCountDown, setIsCountDown] = useState(false);
     const timeOptions = [
         "10",
         "15",
@@ -25,6 +26,7 @@ const Timer = () => {
         setTimeCountdown(600);
         setWorkedTime(0);
         setCountDownStart(false);
+        setIsCountDown(false);
         timeOptionsRef.current.value = "10"
         toast.success("Timer reset")
     }
@@ -35,12 +37,13 @@ const Timer = () => {
             interval = setInterval(() => {
                 setTimeCountdown(timeCountdown => timeCountdown - 1);
                 setWorkedTime(workedTime => workedTime + 1);
-
+                setIsCountDown(true);
             }, 1000);
         } else {
             clearInterval(interval);
             setCountDownStart(false);
             setWorkedTime(0);
+            setIsCountDown(false);
             dispatch(addWorkedTime(workedTime));
         }
         return () => clearInterval(interval);
@@ -64,7 +67,7 @@ const Timer = () => {
                     <h2>{formatTime(timeCountdown)}</h2>
                 </div>
 
-                <div className='timer-details'>
+                {!isCountDown && <div className='timer-details'>
                     <h2>Work session range</h2>
                     <select className='timer-select' ref={timeOptionsRef} onChange={handleChange}>
                         {timeOptions.map((option, index) => (
@@ -73,7 +76,7 @@ const Timer = () => {
                             </option>
                         ))}
                     </select>
-                </div>
+                </div>}
             </div>
 
             <button className={!countDownStart ? 'start-timer-btn' : 'start-timer-btn stopped'} onClick={toggleStartStop}>
@@ -81,7 +84,7 @@ const Timer = () => {
             </button>
             <button className='reset-timer-btn' onClick={reset}>Reset</button>
 
-        </div>
+        </div >
     )
 }
 
