@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { formatTime } from '../helpers/formatTime';
 import { addWorkedTime } from '../redux/features/timerSlice';
 import { toast } from 'react-toastify';
+import { saveWorkedTimeToDb } from '../redux/api/saveTimerApiSlice';
 
 
 const Timer = () => {
@@ -45,6 +46,7 @@ const Timer = () => {
             setWorkedTime(0);
             setIsCountDown(false);
             dispatch(addWorkedTime(workedTime));
+            saveWorkedTimeToDb((workedTime));
         }
         return () => clearInterval(interval);
     }, [countDownStart, timeCountdown]);

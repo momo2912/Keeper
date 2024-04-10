@@ -16,8 +16,8 @@ function Note({ title, body, id }) {
     const done = finishedTask.find((task) => task.id === id);
     const [doneChecked, setDoneChecked] = useState(done);
     const handleDelete = () => {
-        if (window.confirm("Removing task")) {
-            toast.success("Task removed successfully");
+        if (window.confirm('Removing task')) {
+            toast.success('Task removed successfully');
             dispatch(removeTask(id))
         }
     }
@@ -32,24 +32,31 @@ function Note({ title, body, id }) {
         setEditing(editing => !editing);
     }
     const handleDoneCheck = () => {
-        setDoneChecked(prevState => !prevState)
+        setDoneChecked((prevState) => {
+            if(prevState) {
+                toast.success('Keep working.');
+            } else {
+                toast.success('Task is done.');
+            }
+            return !prevState;
+        })
     }
 
     return (
 
         <div className="note">
             {editing ?
-                <div className='note-description'>
-                    <div className='note-title'>
+                <div className="note-description">
+                    <div className="note-title">
                         <h2>{title}</h2>
                     </div>
                     <p>{body}</p>
                 </div> :
                 <FormEditNote title={title} body={body} setEditing={setEditing} />
             }
-            <div className='note-utils'>
-                <button className='delete-btn' onClick={handleDelete}><DeleteIcon /></button>
-                <button className='edit-btn' onClick={handleEdit}><EditIcon /></button>
+            <div className="note-utils">
+                <button className="delete-btn" onClick={handleDelete}><DeleteIcon /></button>
+                <button className="edit-btn" onClick={handleEdit}><EditIcon /></button>
                 <button className={!doneChecked ? 'done-btn' : 'done-btn-checked'} onClick={handleDoneCheck}><DoneIcon /></button>
             </div>
         </div>
